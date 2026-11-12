@@ -45,7 +45,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
-body { background: var(--bg); color: var(--ink); font: 14px/1.55 var(--mono); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+body { -webkit-tap-highlight-color: transparent; background: var(--bg); color: var(--ink); font: 14px/1.55 var(--mono); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
 h1, h2, h3 { margin: 0; font-weight: 500; text-wrap: balance; }
 h1 { font-size: 22px; letter-spacing: -0.02em; }
 h2 { font-size: 14px; }
@@ -322,7 +322,8 @@ input:disabled, select:disabled { opacity: .55; }
 .marcar { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 13px; }
 .conf { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 12px; background: var(--sunken); font-size: 12.5px; }
 .conf:empty { display: none; }
-.conf > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.conf > div { display: block; line-height: 1.6; }
+.conf .pill, .conf .tag { margin-right: 6px; vertical-align: middle; }
 .lateral { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 12px; }
 .resumo-form dl { display: grid; grid-template-columns: 1fr auto; gap: 10px 12px; margin: 0; font-size: 13px; }
 .resumo-form dt { color: var(--muted); }
@@ -437,7 +438,120 @@ tr:last-child td { border-bottom: 0; }
 .alternar button[aria-pressed="true"], .chip[aria-pressed="true"] { color: var(--info); }
 .seg.b { background: var(--accent); }
 .seg-leg i.seg.b { background: var(--accent); }
+
+.alternar.mini { grid-template-columns: auto auto; padding: 3px; gap: 3px; border-radius: 10px; }
+.alternar.mini button { min-height: 34px; padding: 0 14px; font-size: 12.5px; }
+.grupo-cab:has(.alternar.mini) h2 { font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.motivos { display: flex; flex-direction: column; gap: 8px; }
+.motivos .lbl { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* seletor de data */
+.data-caixa { position: relative; }
+.data-btn { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 12px 0 14px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface); color: var(--ink); font-size: 15px; cursor: pointer; text-align: left; }
+.data-btn:hover { border-color: var(--campo); }
+.data-btn svg { width: 18px; height: 18px; color: var(--muted); }
+.data-btn:disabled { opacity: .55; cursor: default; }
+.data-pop { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; width: 304px; padding: 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 18px 44px rgba(0,0,0,.16); display: flex; flex-direction: column; gap: 10px; }
+.dp-cab { display: flex; align-items: center; justify-content: space-between; }
+.dp-cab b { font-weight: 600; font-size: 14px; }
+.dp-sem, .dp-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.dp-sem span { text-align: center; font-size: 10.5px; color: var(--muted); padding: 4px 0; border-radius: 999px; background: var(--sunken); }
+.dp-dia { height: 36px; border: 0; border-radius: 10px; background: var(--bg); color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; }
+.dp-dia.ag { background: var(--sunken); color: var(--ink); }
+.dp-dia:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--accent); }
+.dp-dia.hoje { box-shadow: inset 0 0 0 2px var(--accent); }
+.dp-dia.sel { background: var(--accent); color: #fff; font-weight: 600; }
+.dp-dia:disabled { opacity: .3; cursor: default; }
+.dp-rodape { display: flex; justify-content: space-between; align-items: center; padding-top: 2px; }
+.dp-rodape .link { margin: 0; padding: 8px 4px; }
+@media (max-width: 560px) {
+  .data-pop { position: fixed; left: 12px; right: 12px; top: auto; bottom: calc(80px + env(safe-area-inset-bottom)); width: auto; }
+  .dp-dia { height: 42px; }
+}
 [hidden] { display: none !important; }
+
+/* ---------- checagem: contraste, aparelhos e ajustes ---------- */
+:root[data-modo="escuro"] { --accent: #2563EB; --faint: #8A8A93; }
+@media (prefers-color-scheme: dark) { :root[data-modo="sistema"] { --accent: #2563EB; --faint: #8A8A93; } }
+.cal-titulo h2 { color: var(--muted); white-space: nowrap; }
+.selo[data-n="warn"] { color: #451A03; }
+.selo[data-n="bad"] { background: #BE123C; }
+.aviso[data-n="warn"] .txt > svg { color: var(--warn); }
+.seg { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.colunas .col { background: var(--campo); }
+.colunas .col.atual { background: var(--accent); }
+input[type="password"], input[type="email"] { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--campo); border-radius: 12px; background: var(--surface); font-size: 15px; }
+input[type="text"], input[type="date"], input[type="month"], input[type="number"], select, textarea, .data-btn, .passo, .opcao { border-color: var(--campo); }
+.alternar button[aria-pressed="true"], .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--accent); font-weight: 600; }
+.motivos .chips { background: transparent; padding: 0; gap: 6px; }
+.motivos .chip { border: 1px solid var(--campo); background: var(--surface); color: var(--ink); min-height: 44px; }
+.motivos .chip[aria-pressed="true"] { border-color: var(--accent); }
+.alternar button { min-height: 44px; }
+.conf .tag { background: var(--surface); }
+/* calendário: dias fora da agenda só com contorno + legenda */
+.dia-c { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.dia-c.agenda, .dia-c.visita, .dia-c.falta, .dia-c.pend, .dia-c.feriado { box-shadow: none; }
+.dia-c.hoje { box-shadow: 0 0 0 2px var(--ink); }
+.dia-c { place-items: start start; padding: 8px 0 0 10px; }
+.cal-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11.5px; color: var(--muted); }
+.cal-leg span { display: inline-flex; align-items: center; gap: 6px; }
+.cal-leg i.dia-c { box-shadow: inset 0 0 0 1px var(--line-strong) !important; display: inline-block; width: 14px; height: 14px; min-height: 0; aspect-ratio: auto; border-radius: 4px; padding: 0; }
+.cal-cab { flex-wrap: wrap; }
+@media (max-width: 560px) {
+  .dia-c { place-items: center; padding: 0; }
+  .dia-c .selo { right: 50%; bottom: 3px; transform: translateX(50%); min-width: 6px; width: 6px; height: 6px; padding: 0; font-size: 0; }
+  .dia-c .selo svg { display: none; }
+}
+/* histórico: navegação de mês e filtros */
+.mes-nav h2 { font-size: 20px; }
+.cal-nav { min-width: 44px; min-height: 44px; }
+.cal-nav:disabled { opacity: .35; cursor: default; }
+@media (max-width: 860px) {
+  .filtros .chips { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+  .filtros .chip { white-space: nowrap; flex: none; }
+  .lista .lado { flex-direction: row; align-items: center; flex-wrap: wrap; }
+}
+.so-pc { display: inline; }
+@media (max-width: 860px) { .so-pc { display: none; } }
+/* formulário: mensagem junto do salvar */
+.salvar-fixo { flex-wrap: wrap; }
+.salvar-fixo .msg { flex-basis: 100%; margin: 0; }
+.salvar-fixo .msg:empty { display: none; }
+@media (max-width: 860px) { .salvar-fixo .msg:not(:empty) { background: var(--surface); padding: 10px 12px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.12); } }
+html { scroll-padding-bottom: 170px; }
+main [id], .grupo, .campo { scroll-margin: 90px 0 170px; }
+/* toast no topo no celular (não cobre o botão Salvar) */
+@media (max-width: 860px) { .toast { bottom: auto; top: calc(12px + env(safe-area-inset-top)); } }
+/* menu lateral */
+.lateral-nav { overflow-y: auto; overflow-x: hidden; }
+.lateral-nav > * { flex-shrink: 0; }
+.casca.recolhido .aba span, .casca.recolhido .nav-btn span:not(.tema-ic) { display: inline; position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.config-grid { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+/* celular deitado / dobrável: menu compacto em vez de sumir */
+@media (max-width: 860px) and (max-height: 520px) {
+  .abas-cel { display: grid; padding: 2px 6px calc(2px + env(safe-area-inset-bottom)); }
+  .abas-cel .aba { height: 40px; flex-direction: row; gap: 6px; font-size: 11px; }
+  .abas-cel .aba svg { width: 18px; height: 18px; }
+  main { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .salvar-fixo { bottom: calc(52px + env(safe-area-inset-bottom)); }
+  .data-pop { position: fixed; top: 8px; bottom: 8px; max-height: calc(100vh - 16px); overflow-y: auto; left: 50%; right: auto; transform: translateX(-50%); width: 304px; }
+}
+@media (max-width: 860px) { body:has(main :is(input, textarea):focus) .abas-cel { display: none; } }
+
+/* alvos de toque no toque (44px) */
+@media (pointer: coarse) {
+  .nav-btn.so-icone, .so-icone { min-width: 44px; min-height: 44px; }
+  .chip, button.link, a.link { min-height: 44px; }
+  .vista-b { width: 44px; height: 44px; }
+  a.link, button.link { display: inline-flex; align-items: center; }
+  .lateral-nav .aba, .lateral-nav .nav-btn { min-height: 44px; height: auto; }
+  .alternar.mini button { min-height: 44px; }
+}
+@media (max-height: 520px) and (pointer: coarse) {
+  .data-pop { position: fixed; top: 8px; bottom: auto; max-height: calc(100vh - 16px); overflow-y: auto; left: 50%; right: auto; transform: translateX(-50%); width: 304px; }
+}
+@media (max-width: 860px) and (max-height: 520px) { .abas-cel .aba { height: 44px; } main { padding-bottom: calc(68px + env(safe-area-inset-bottom)); } .salvar-fixo { bottom: calc(56px + env(safe-area-inset-bottom)); } }
+@media (max-width: 760px) { .dia-c { place-items: center; padding: 0; } .dia-c .selo { right: 50%; bottom: 3px; transform: translateX(50%); min-width: 6px; width: 6px; height: 6px; padding: 0; font-size: 0; } .dia-c .selo svg { display: none; } }
 </style>
 </head>
 <body>
@@ -501,12 +615,14 @@ window.LAV_CONFIG = {
         return { id: id, data: d.data, status: d.status === 'falta' ? 'falta' : 'realizada', motivo: d.motivo || '', urgencia: !!d.urgencia,
           levou_cam: +l.cam || 0, levou_br: +l.br || 0, levou_vm: +l.vm || 0,
           trouxe_cam: +t.cam || 0, trouxe_pecas: +t.pecas || 0, trouxe_br: +t.br || 0, trouxe_vm: +t.vm || 0,
+          sem_levar: d.semLevar || '', sem_trazer: d.semTrazer || '',
           obs: d.obs || '', por: nulo(d.por), em: nulo(d.em) || new Date().toISOString(), edit_por: nulo(d.editPor), edit_em: nulo(d.editEm) };
       },
       paraDoc: function (r) {
         return { data: r.data, status: r.status, motivo: r.motivo || '', urgencia: !!r.urgencia,
           levou: { cam: +r.levou_cam, br: r.levou_br, vm: r.levou_vm },
           trouxe: { cam: +r.trouxe_cam, pecas: r.trouxe_pecas, br: r.trouxe_br, vm: r.trouxe_vm },
+          semLevar: r.sem_levar || '', semTrazer: r.sem_trazer || '',
           obs: r.obs || '', por: r.por, em: iso(r.em), editPor: r.edit_por, editEm: iso(r.edit_em) };
       }
     },
@@ -544,6 +660,7 @@ window.LAV_CONFIG = {
   function erro(e) {
     if (!e) return { code: 'unavailable', message: 'erro' };
     var msg = e.message || String(e);
+    if (e.code === 'PGRST204' || /column .* (does not exist|could not find)|schema cache/i.test(msg)) return { code: 'invalid_argument', message: 'Falta rodar uma query no Supabase (verifique a 06). Detalhe: ' + msg };
     if (e.code === '42501' || /row-level security|permission denied/i.test(msg)) return { code: 'invalid_argument', message: msg };
     if (/fetch|network|Failed to/i.test(msg)) return { code: 'unavailable', message: msg };
     if (e.code === '23514' || e.code === '22P02' || e.code === '23502') return { code: 'invalid_argument', message: msg };
@@ -553,9 +670,20 @@ window.LAV_CONFIG = {
 
   // ---------- leitura e assinaturas ----------
   var ouvintes = {}; // nome -> [fn]
+  /** Lê a tabela inteira em páginas de 1000 (o Supabase corta em 1000 por consulta).
+      Exige sessão válida: sem ela a consulta sairia como anônima e voltaria vazia, sem erro. */
   function carregar(nome) {
-    var m = MAPA[nome];
-    return sb.from(m.tabela).select('*').then(exigir).then(function (r) { return r.data || []; });
+    var m = MAPA[nome], todas = [];
+    var pagina = function (de) {
+      return sb.from(m.tabela).select('*').order(m.chave).range(de, de + 999).then(exigir).then(function (r) {
+        todas = todas.concat(r.data || []);
+        return (r.data || []).length === 1000 ? pagina(de + 1000) : todas;
+      });
+    };
+    return sb.auth.getSession().then(function (r) {
+      if (!r.data || !r.data.session) throw { code: 'unavailable', message: 'Sessão expirada. Recarregue a página e entre de novo.' };
+      return pagina(0);
+    });
   }
   function avisar(nome) {
     var fs = ouvintes[nome]; if (!fs || !fs.length) return;
@@ -602,7 +730,10 @@ window.LAV_CONFIG = {
       },
       update: function (dados) { return this.set(dados); },
       delete: function () {
-        return filtro(sb.from(m.tabela).delete()).select().then(exigir).then(function () { avisar(nome); });
+        return filtro(sb.from(m.tabela).delete()).select().then(exigir).then(function (r) {
+          if (!r.data || !r.data.length) throw { code: 'invalid_argument', message: 'nada excluído (sem permissão ou já excluído)' };
+          avisar(nome);
+        });
       },
       onSnapshot: function (next, err) {
         var o = { fn: function (linhas) {
@@ -642,7 +773,7 @@ window.LAV_CONFIG = {
     id: function () { return Promise.resolve(sessao ? sessao.user.id : null); },
     canEdit: function () { return Promise.resolve(!!perfil && perfil.papel === 'admin'); },
     isOwner: function () { return Promise.resolve(!!perfil && perfil.papel === 'admin'); },
-    can: function (n) { return Promise.resolve(n === 'data.write' ? !!perfil && perfil.papel !== 'leitor' : false); },
+    can: function (n) { return Promise.resolve(n === 'data.write' ? !!perfil && (perfil.papel === 'admin' || perfil.papel === 'equipe') : false); },
     me: function () { return Promise.resolve({ id: sessao ? sessao.user.id : null, name: perfil ? perfil.nome : '', email: sessao ? sessao.user.email : null }); },
     profiles: function (ids) {
       ids = [].concat(ids || []);
@@ -693,6 +824,7 @@ window.LAV_CONFIG = {
   // ---------- login ----------
   function mostrarLogin(msg) {
     var tela = document.getElementById('login');
+    if (sessao && msg) { var sair = document.getElementById('login-sair'); if (!sair) { sair = document.createElement('button'); sair.type = 'button'; sair.id = 'login-sair'; sair.className = 'link'; sair.textContent = 'Entrar com outra conta'; sair.onclick = function () { sb.auth.signOut(); }; tela.appendChild(sair); } }
     tela.hidden = false;
     var m = document.getElementById('login-msg'); m.textContent = msg || '';
     var f = document.getElementById('login-form');
@@ -710,9 +842,11 @@ window.LAV_CONFIG = {
   }
   function entrar() {
     sb.from('lav_perfis').select('id, email, nome, papel').eq('id', sessao.user.id).maybeSingle().then(function (r) {
-      perfil = r.data || { papel: 'leitor', nome: sessao.user.email };
+      if (r.error) { mostrarLogin('Não foi possível carregar seu perfil. Confira a internet e toque em Entrar de novo.'); return; }
+      if (!r.data || ['admin', 'equipe', 'leitor'].indexOf(r.data.papel) < 0) { mostrarLogin('Seu acesso ainda não foi liberado. Peça ao responsável para liberar em Ajustes › Equipe.'); return; }
+      perfil = r.data;
       document.getElementById('login').hidden = true;
-      var q = document.getElementById('quem'); if (q) q.textContent = perfil.nome || sessao.user.email;
+      var q = document.getElementById('quem'); if (q) q.textContent = (perfil.nome || sessao.user.email) + ({ admin: ' · responsável', equipe: ' · registra', leitor: ' · só vê' }[perfil.papel] || '');
       liberar(true);
     }, function () { mostrarLogin('Não foi possível carregar seu perfil. Tente de novo.'); });
   }
@@ -814,6 +948,8 @@ window.LAV_CONFIG = {
       urgencia: !falta && !!d.urgencia,
       levou: { cam: Math.max(0, num(l.cam)), br: Math.max(0, Math.round(num(l.br))), vm: Math.max(0, Math.round(num(l.vm))) },
       trouxe: { cam: Math.max(0, num(t.cam)), pecas: Math.max(0, Math.round(num(t.pecas))), br: Math.max(0, Math.round(num(t.br))), vm: Math.max(0, Math.round(num(t.vm))) },
+      semLevar: !falta && typeof d.semLevar === 'string' ? d.semLevar : '',
+      semTrazer: !falta && typeof d.semTrazer === 'string' ? d.semTrazer : '',
       obs: typeof d.obs === 'string' ? d.obs : '',
       por: typeof d.por === 'string' ? d.por : null,
       em: typeof d.em === 'string' ? d.em : '',
@@ -1148,6 +1284,9 @@ window.LAV_CONFIG = {
   };
   function ico(n) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + IC[n] + '</svg>'; }
   function pill(n, icone, txt, titulo) { return '<span class="pill" data-n="' + n + '"' + (titulo ? ' title="' + esc(titulo) + '"' : '') + '>' + (icone ? ico(icone) : '') + txt + '</span>'; }
+  var SEM_LEVAR = [['sem-roupa', 'Não tinha roupa suja'], ['erro', 'Erro da lavanderia'], ['feriado', 'Feriado'], ['outro', 'Outro motivo']];
+  var SEM_TRAZER = [['erro', 'Erro ou esquecimento'], ['nao-pronta', 'Roupa ainda não pronta'], ['feriado', 'Feriado'], ['outro', 'Outro motivo']];
+  function rotuloMotivo(lista, cod) { var o = lista.filter(function (x) { return x[0] === cod; })[0]; return o ? o[1].toLowerCase() : 'sem motivo informado'; }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function dm(s) { return s.slice(8, 10) + '/' + s.slice(5, 7); }
   function dma(s) { return dm(s) + '/' + s.slice(0, 4); }
@@ -1172,6 +1311,11 @@ window.LAV_CONFIG = {
     if (s === L.somaDias(t, 1)) return 'amanhã';
     if (s === L.somaDias(t, -1)) return 'ontem';
     return dlongo(s);
+  }
+  function podeApagar(reg) {
+    if (ehAdmin) return true;
+    if (!podeEscrever || !reg || reg.por !== meuId || !reg.em) return false;
+    return Date.now() - new Date(reg.em).getTime() < 2 * 864e5 - 60000;
   }
   function nome(id) { if (!id) return ''; if (id === meuId) return 'você'; return (nomes[id] && nomes[id].name) || 'alguém da equipe'; }
   function agoraISO() { return new Date().toISOString(); }
@@ -1251,7 +1395,7 @@ window.LAV_CONFIG = {
       if (!confirmado) { avisoRede = 'O banco de dados ainda não respondeu. Os dados podem estar desatualizados; a página continua tentando.'; marcarSinc('erro'); desenhar(); }
     }, 10000);
     var ok = function (snap) {
-      if (snap.metadata && !snap.metadata.fromCache && !confirmado) { confirmado = true; clearTimeout(timerCarga); avisoRede = ''; marcarSinc('ok'); }
+      if (snap.metadata && !snap.metadata.fromCache && (!confirmado || avisoRede)) { var tinha = !!avisoRede; confirmado = true; clearTimeout(timerCarga); avisoRede = ''; marcarSinc('ok'); if (tinha) setTimeout(function () { atualizarTela(); }, 0); }
     };
     var lista = function (q) { return q.docs.map(function (d) { return { id: d.id, data: d.data() }; }); };
     db.doc('config/geral').onSnapshot(function (s) { cru.cfg = s.exists ? s.data() : null; carregado.cfg = true; ok(s); atualizar(); }, onErro);
@@ -1298,6 +1442,7 @@ window.LAV_CONFIG = {
   }
   window.addEventListener('hashchange', function () {
     rota = lerRota(); formNaTela = false; ajSujo = false;
+    if (rota === 'registrar') document.querySelectorAll('.toast').forEach(function (t) { t.remove(); });
     if (rota === 'registrar' && !form) form = novoForm(hoje(), false);
     desenhar(); window.scrollTo(0, 0);
   });
@@ -1306,10 +1451,62 @@ window.LAV_CONFIG = {
       if (a.dataset.r === rota) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     document.querySelectorAll('.aba.primaria').forEach(function (p) { p.hidden = !podeEscrever; });
-    var ac = document.querySelector('.abas-cel'); if (ac) ac.style.gridTemplateColumns = podeEscrever ? '' : 'repeat(4, 1fr)';
+    document.querySelectorAll('.aba[data-r="ajustes"]').forEach(function (a) { a.hidden = !podeEscrever; });
+    var ac = document.querySelector('.abas-cel'); if (ac) ac.style.gridTemplateColumns = podeEscrever ? '' : 'repeat(3, 1fr)';
+  }
+
+  // ---------------- seletor de data próprio (o do navegador não aceita estilo) ----------------
+  var popData = null;
+  function fecharData() { if (popData) { popData.remove(); popData = null; document.removeEventListener('mousedown', foraData, true); document.removeEventListener('keydown', teclaData, true); } }
+  function foraData(e) { if (popData && !popData.contains(e.target) && !e.target.closest('.data-btn')) fecharData(); }
+  function teclaData(e) { if (e.key === 'Escape') { var b = popData && popData._btn; fecharData(); if (b) b.focus(); } }
+  function textoData(v) { return L.dataValida(v) ? cap(DIAS[L.diaSemana(v)]) + ', ' + dma(v) : 'Escolher data'; }
+  function melhorarDatas(raiz) {
+    raiz.querySelectorAll('input[type="date"]').forEach(function (inp) {
+      var id = inp.id, btn = document.createElement('button'), caixa = document.createElement('div');
+      caixa.className = 'data-caixa'; btn.type = 'button'; btn.className = 'data-btn'; btn.id = id + '-btn'; btn.setAttribute('aria-haspopup', 'dialog'); btn.disabled = inp.disabled;
+      inp.type = 'hidden';
+      inp.parentNode.insertBefore(caixa, inp); caixa.appendChild(btn); caixa.appendChild(inp);
+      var lb = document.querySelector('label[for="' + id + '"]'); if (lb) lb.htmlFor = btn.id;
+      var pintar = function () { btn.innerHTML = '<span>' + textoData(inp.value) + '</span>' + ico('cal'); };
+      pintar();
+      btn.onclick = function () {
+        if (popData && popData._btn === btn) { fecharData(); return; }
+        fecharData();
+        var mes = (L.dataValida(inp.value) ? inp.value : hoje()).slice(0, 7);
+        var pop = document.createElement('div'); pop.className = 'data-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Escolher data'); pop._btn = btn;
+        var desenharPop = function () {
+          var ini = mes + '-01', fim = L.fimMes(ini), t = hoje(), min = inp.getAttribute('min') || '', max = inp.getAttribute('max') || '';
+          var h = '<div class="dp-cab"><button type="button" class="cal-nav" data-dp="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>' +
+            '<b>' + cap(MESES[+mes.slice(5) - 1]) + ' ' + mes.slice(0, 4) + '</b>' +
+            '<button type="button" class="cal-nav" data-dp="1" aria-label="Próximo mês"' + (max && mes >= max.slice(0, 7) ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div>' +
+            '<div class="dp-sem">' + ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(function (d) { return '<span>' + d + '</span>'; }).join('') + '</div><div class="dp-dias">';
+          for (var i = 0; i < L.diaSemana(ini); i++) h += '<span></span>';
+          for (var d = ini; d <= fim; d = L.somaDias(d, 1)) {
+            var off = (min && d < min) || (max && d > max);
+            var cls = 'dp-dia' + (d === inp.value ? ' sel' : '') + (d === t ? ' hoje' : '') + (E.cfg.dias.indexOf(L.diaSemana(d)) >= 0 ? ' ag' : '');
+            h += '<button type="button" class="' + cls + '" data-dia-sel="' + d + '"' + (off ? ' disabled' : '') + ' aria-label="' + cap(dlongo(d)) + '">' + +d.slice(8) + '</button>';
+          }
+          h += '</div><div class="dp-rodape"><button type="button" class="link" data-dp="hoje"' + ((min && t < min) || (max && t > max) ? ' disabled' : '') + '>Hoje</button>' + (min ? '<span class="muted peq">a partir de ' + dma(min) + '</span>' : '') + '</div>';
+          pop.innerHTML = h;
+        };
+        desenharPop();
+        pop.addEventListener('click', function (e) {
+          var b = e.target.closest('button'); if (!b || b.disabled) return;
+          var escolher = function (v) { inp.value = v; pintar(); fecharData(); inp.dispatchEvent(new Event('input', { bubbles: true })); inp.dispatchEvent(new Event('change', { bubbles: true })); btn.focus(); };
+          if (b.dataset.diaSel) escolher(b.dataset.diaSel);
+          else if (b.dataset.dp === 'hoje') escolher(hoje());
+          else if (b.dataset.dp) { var d0 = L.parse(mes + '-01'); d0.setMonth(d0.getMonth() + (+b.dataset.dp)); mes = L.iso(d0).slice(0, 7); desenharPop(); }
+        });
+        caixa.appendChild(pop); popData = pop;
+        document.addEventListener('mousedown', foraData, true); document.addEventListener('keydown', teclaData, true);
+        var sel = pop.querySelector('.dp-dia.sel') || pop.querySelector('.dp-dia:not([disabled])'); if (sel) sel.focus();
+      };
+    });
   }
 
   function desenhar(manterRolagem) {
+    fecharData();
     var y = window.scrollY;
     redesenhoPendente = false;
     marcarAbas();
@@ -1317,14 +1514,15 @@ window.LAV_CONFIG = {
     if (avisoRede) topo += '<div class="aviso" data-n="bad"><div class="txt"><strong>Sem conexão com o banco</strong><span>' + avisoRede + '</span></div></div>';
     if (semBanco) { app.innerHTML = topo; return; }
     if (!tudoCarregado()) { app.innerHTML = topo + '<p class="carregando">Carregando dados…</p>'; return; }
-    if (!podeEscrever && rota !== 'relatorio') topo += '<div class="aviso"><div class="txt"><strong>Somente leitura</strong><span>Sua conta pode ver os dados, mas não registrar. Peça ao responsável para liberar o registro.</span></div></div>';
+    if (!podeEscrever && rota === 'registrar') topo += '<div class="aviso"><div class="txt"><strong>Sua conta é só para consulta</strong><span>Sua conta pode ver os dados, mas não registrar. Peça ao responsável para liberar o registro.</span></div></div>';
     if (rota === 'registrar') {
       if (!podeEscrever) { app.innerHTML = topo; formNaTela = false; return; }
-      app.innerHTML = topo + telaRegistrar(); formNaTela = true; ligarForm(); return;
+      app.innerHTML = topo + telaRegistrar(); formNaTela = true; melhorarDatas(app); ligarForm(); return;
     }
     formNaTela = false;
     var html = rota === 'historico' ? telaHistorico() : rota === 'relatorio' ? telaRelatorio() : rota === 'ajustes' ? telaAjustes() : telaInicio();
     app.innerHTML = topo + html;
+    melhorarDatas(app);
     if (rota === 'ajustes') ligarAjustes();
     if (rota === 'relatorio') ligarRelatorio();
     if (rota === 'historico') ligarHistorico();
@@ -1336,12 +1534,14 @@ window.LAV_CONFIG = {
   function etiquetas(v, con, vg) {
     var t = [];
     if (v.falta) {
-      t.push(v.motivo === 'feriado' ? pill('', 'cal', 'Feriado') : v.motivo === 'outro' ? pill('', 'info', 'Sem visita') : pill('bad', 'x', 'Faltou'));
+      t.push(v.motivo === 'feriado' ? pill('', 'cal', 'Feriado') : v.motivo === 'outro' ? pill('', 'info', 'Sem visita') : pill('bad', 'x', 'Não veio'));
       return t;
     }
     var tp = L.tipoVisita(E, v, vg);
+    if (v.semTrazer && v.semTrazer !== 'feriado') t.push(pill('warn', 'relogio', 'Não trouxe'));
+    if (v.semLevar === 'erro') t.push(pill('warn', 'alerta', 'Não levou'));
     if (tp === 'urgencia') t.push(pill('warn', 'alerta', 'Urgência'));
-    else if (tp === 'extra') t.push(pill('info', 'mais', 'Extra'));
+    else if (tp === 'extra') t.push(pill('info', 'mais', 'Fora da agenda'));
     var p = con.porVisita[v.id];
     if (p && p.sobra) t.push(pill('roxo', 'seta', '+' + fkg(p.sobra) + ' kg', 'Voltou mais do que as coletas em aberto'));
     if (p && p.leva && p.leva.atrasada) t.push(pill('warn', 'relogio', 'Faltam ~' + fkg(p.leva.falta) + ' kg'));
@@ -1355,6 +1555,7 @@ window.LAV_CONFIG = {
     var tp = L.tipoVisita(E, v, vg);
     return tp === 'urgencia' ? 'warn' : tp === 'extra' ? 'info' : 'ok';
   }
+  function linhaSem(rotulo, txt) { return '<div><span class="l">' + rotulo + '</span><span class="kgv muted">—</span><span class="muted">' + esc(cap(txt)) + '</span></div>'; }
   function linhaMov(rotulo, o, devolvido) {
     var kg = o.cam > 0 ? '<span class="kgv">' + fkg(o.cam) + '<small> kg</small></span>' : '<span class="kgv muted">—</span>';
     var p = [];
@@ -1365,7 +1566,7 @@ window.LAV_CONFIG = {
   function itemVisita(v, con, vg, clicavel) {
     var corpo;
     if (v.falta) corpo = '<div class="mov"><div style="display:block">' + (v.motivo === 'feriado' ? 'Feriado, sem visita' : v.motivo === 'outro' ? 'Sem visita' : 'A lavanderia não veio') + '</div>' + (v.obs ? '<div class="obs">' + esc(v.obs) + '</div>' : '') + '</div>';
-    else corpo = '<div class="mov">' + linhaMov('Levaram', v.levou, false) + linhaMov('Trouxeram', v.trouxe, true) + (v.obs ? '<div class="obs">' + esc(v.obs) + '</div>' : '') + '</div>';
+    else corpo = '<div class="mov">' + (v.semLevar ? linhaSem('Levaram', rotuloMotivo(SEM_LEVAR, v.semLevar)) : linhaMov('Levaram', v.levou, false)) + (v.semTrazer ? linhaSem('Trouxeram', rotuloMotivo(SEM_TRAZER, v.semTrazer)) : linhaMov('Trouxeram', v.trouxe, true)) + (v.obs ? '<div class="obs">' + esc(v.obs) + '</div>' : '') + '</div>';
     var tags = etiquetas(v, con, vg);
     return '<li class="item' + (clicavel ? ' clic' : '') + '"' + (clicavel ? ' data-editar="' + esc(v.id) + '" tabindex="0" role="button"' : '') + '>' +
       (clicavel ? '<span class="sr">Editar: </span>' : '') +
@@ -1467,13 +1668,14 @@ window.LAV_CONFIG = {
         var kg = real.reduce(function (x, v) { return x + v.levou.cam; }, 0), dv = real.reduce(function (x, v) { return x + v.trouxe.cam; }, 0);
         st = 'visita'; selo = '<b class="selo" data-n="info">' + real.length + '</b>';
         tit += ': ' + plural(real.length, 'visita', 'visitas') + ', levaram ' + fkg(kg) + ' kg e trouxeram ' + fkg(dv) + ' kg';
+        if (real.some(function (v) { return v.semTrazer || v.semLevar; })) { tit += ' (visita parcial)'; selo = '<b class="selo" data-n="warn">' + real.length + '</b>'; }
       } else if (E.feriados[s2] || (falta && falta.motivo === 'feriado')) { st = 'feriado'; selo = agenda ? '<b class="selo">' + ico('cal') + '</b>' : ''; tit += ': feriado' + (E.feriados[s2] ? ' (' + E.feriados[s2].nome + ')' : ''); }
       else if (falta) { st = falta.motivo === 'lavanderia' ? 'falta' : 'feriado'; selo = '<b class="selo" data-n="' + (falta.motivo === 'lavanderia' ? 'bad' : '') + '">' + ico('x') + '</b>'; tit += falta.motivo === 'lavanderia' ? ': a lavanderia não veio' : ': sem visita'; }
       else if (agenda && !antes && !futuro && s2 < t) { st = 'pend'; selo = '<b class="selo" data-n="warn">!</b>'; tit += ': dia de visita sem registro'; }
       else if (agenda && !antes) tit += s2 === t ? ': dia de visita, hoje' : ': visita prevista';
       var cls = 'dia-c' + (agenda ? ' agenda' : '') + (st ? ' ' + st : '') + (s2 === t ? ' hoje' : '') + (antes ? ' antes' : '');
       var acao = '';
-      if (podeEscrever && !futuro && !antes) acao = real.length || falta ? ' data-editar="' + esc((real[0] || falta).id) + '"' : ' data-reg="' + s2 + '"';
+      if (podeEscrever && !futuro && (!antes || ehAdmin)) acao = real.length || falta ? ' data-editar="' + esc((real[0] || falta).id) + '"' : ' data-reg="' + s2 + '"';
       h += (acao ? '<button type="button" class="' + cls + '"' + acao + ' title="' + esc(tit) + '" aria-label="' + esc(tit) + '">' : '<span class="' + cls + '" title="' + esc(tit) + '">') +
         '<span class="num-d">' + s2.slice(8) + '</span>' + selo + (acao ? '</button>' : '</span>');
     }
@@ -1519,6 +1721,7 @@ window.LAV_CONFIG = {
     if (calVista === 'mes') {
       var rm = L.resumo(E, calMes + '-01', L.fimMes(calMes + '-01'), t);
       b += calendario(t, calMes) +
+        '<div class="cal-leg"><span><i class="dia-c visita"></i>visita</span><span><i class="dia-c agenda"></i>dia combinado</span><span><i class="dia-c pend"></i>sem registro</span><span><i class="dia-c falta"></i>não veio</span><span><i class="dia-c feriado"></i>feriado</span></div>' +
         '<div class="cal-rodape"><span class="delta">' + rm.feitas + ' de ' + rm.esperadas + ' visitas da agenda</span>' + (rm.faltaLav.length ? pill('bad', 'x', plural(rm.faltaLav.length, 'falta', 'faltas')) : rm.esperadas ? pill('ok', 'ok', 'Em dia') : '') + (rm.extras + rm.urgencias ? pill('info', 'mais', plural(rm.extras + rm.urgencias, 'extra', 'extras')) : '') + (rm.pendentes.length ? pill('warn', 'relogio', plural(rm.pendentes.length, 'sem registro', 'sem registro')) : '') + '</div>';
     } else {
       b += '<div class="linha-num"><span class="grande">' + r.feitas + '<small>de ' + r.esperadas + ' visitas no mês</small></span>' + stV + '</div>' +
@@ -1541,17 +1744,17 @@ window.LAV_CONFIG = {
     b += '<div class="card c5"><div class="card-cab"><span class="rot">Últimos registros</span><a class="link" href="#historico">Ver histórico</a></div>' +
       (ult.length ? '<ul class="lista">' + ult.map(function (v) {
         var tp = L.tipoVisita(E, v, vg);
-        var txt = v.falta ? (v.motivo === 'feriado' ? 'feriado' : v.motivo === 'outro' ? 'sem visita' : 'faltou') : (tp === 'urgencia' ? 'urgência' : tp === 'extra' ? 'extra' : 'na agenda');
-        return '<li class="linha-reg"' + (podeEscrever ? ' data-editar="' + esc(v.id) + '" tabindex="0" role="button"' : '') + '><span class="ponto" data-n="' + tomVisita(v, con, vg) + '"></span><span class="q">' + dsem(v.data) + ' ' + dm(v.data) + '</span><span class="t">' + txt + '</span>' +
+        var txt = v.falta ? (v.motivo === 'feriado' ? 'feriado' : v.motivo === 'outro' ? 'sem visita' : 'não veio') : (tp === 'urgencia' ? 'urgência' : tp === 'extra' ? 'fora da agenda' : '');
+        return '<li class="linha-reg"' + (podeEscrever && (ehAdmin || !E.cfg.inicio || v.data >= E.cfg.inicio) ? ' data-editar="' + esc(v.id) + '" tabindex="0" role="button"' : '') + '><span class="ponto" data-n="' + tomVisita(v, con, vg) + '"></span><span class="q">' + dsem(v.data) + ' ' + dm(v.data) + '</span><span class="t">' + txt + '</span>' +
           '<span class="barra"><i style="width:' + (v.falta ? 0 : Math.round(v.levou.cam / maxL * 100)) + '%"></i></span><span class="v">' + (v.falta ? '—' : fkg(v.trouxe.cam)) + '</span></li>';
-      }).join('') + '</ul><span class="delta empurra">barra: kg levados · número: kg devolvidos</span>' : '<p class="vazio">Nenhuma visita registrada ainda.</p>') + '</div>';
+      }).join('') + '</ul><span class="delta empurra"><span class="so-pc">barra: kg levados · </span>número: kg devolvidos</span>' : '<p class="vazio">Nenhuma visita registrada ainda.</p>') + '</div>';
 
     var sm = r.sujeiraMedia, smTom = sm == null ? '' : (sm > c.sujMax + 2 || sm < c.sujMin - 2) ? 'bad' : 'ok';
     b += '<div class="card c4"><div class="card-cab"><span class="rot">' + cap(MESES[+t.slice(5, 7) - 1]) + '</span><a class="link" href="#relatorio">Ver relatório</a></div>' +
       '<div class="linha-num"><span class="grande">' + fkg(r.tot.tCam) + '<small>kg devolvidos</small></span></div>' +
       (sm == null ? '<span class="delta">a comparação de peso aparece após 6 devoluções</span>' : '<div class="linha-num">' + pill(smTom, smTom === 'ok' ? 'ok' : 'alerta', pct(sm) + '% mais leve') + '<span class="delta">' + (smTom === 'ok' ? 'normal: ' : 'normal seria ') + c.sujMin + '–' + c.sujMax + '%</span></div>') +
       '<div class="kv empurra">' +
-      '<div><span class="k">Levado sujo</span><span class="v">' + fkg(r.tot.lCam) + ' kg</span></div>' +
+      '<div><span class="k">Levou (sujo)</span><span class="v">' + fkg(r.tot.lCam) + ' kg</span></div>' +
       '<div><span class="k">Peças devolvidas</span><span class="v">' + r.tot.tPecas + '</span></div>' +
       '<div><span class="k">Mops levados</span><span class="v">' + (mopsTxt(r.tot.lBr, r.tot.lVm) || 'nenhum') + '</span></div>' +
       '<div><span class="k">Faltas da lavanderia</span><span class="v">' + r.faltaLav.length + '</span></div>' +
@@ -1561,14 +1764,17 @@ window.LAV_CONFIG = {
 
   // ---------------- formulário ----------------
   function novoForm(data, falta) {
-    return { id: null, novoId: novoId('v'), data: data || hoje(), falta: !!falta, motivo: 'lavanderia', urgencia: false,
-      lcam: '', lbr: 0, lvm: 0, tcam: '', tpecas: '', tbr: 0, tvm: 0, obs: '', original: null };
+    return { id: null, novoId: novoId('v'), dia: hoje(), data: data || hoje(), falta: !!falta, motivo: 'lavanderia', urgencia: false,
+      lcam: '', lbr: 0, lvm: 0, tcam: '', tpecas: '', tbr: 0, tvm: 0, obs: '', original: null,
+      levouSim: true, trouxeSim: true, motivoL: '', motivoT: '' };
   }
   function formDeVisita(v) {
     return { id: v.id, data: v.data, falta: v.falta, motivo: v.motivo || 'lavanderia', urgencia: v.urgencia,
       lcam: kgCampo(v.levou.cam), lbr: v.levou.br, lvm: v.levou.vm,
       tcam: kgCampo(v.trouxe.cam), tpecas: v.trouxe.pecas ? String(v.trouxe.pecas) : '', tbr: v.trouxe.br, tvm: v.trouxe.vm,
-      obs: v.obs, original: v };
+      obs: v.obs, original: v,
+      levouSim: !v.semLevar && !!(v.levou.cam || v.levou.br || v.levou.vm || !(v.trouxe.cam || v.trouxe.br || v.trouxe.vm)), trouxeSim: !v.semTrazer && !!(v.trouxe.cam || v.trouxe.pecas || v.trouxe.br || v.trouxe.vm || !(v.levou.cam || v.levou.br || v.levou.vm)),
+      motivoL: v.semLevar || '', motivoT: v.semTrazer || '' };
   }
   function formVazio(f) { return !f || (!f.id && !f.lcam && !f.tcam && !f.tpecas && !(f.lbr + f.lvm + f.tbr + f.tvm) && !f.obs); }
   function passo(id, rotulo, contexto, valor, tecla, off) {
@@ -1583,18 +1789,19 @@ window.LAV_CONFIG = {
     var f = form, t = hoje();
     var h = '<div class="cab"><h1>' + (f.id ? 'Editar visita' : 'Registrar visita') + '</h1></div>';
     h += '<form class="form com-salvar" id="form" novalidate autocomplete="off"><div class="campos">';
-    h += '<div class="linha dois topo-form"><div class="campo"><label for="f-data">Data</label><input type="date" id="f-data" value="' + f.data + '" max="' + t + '"' + (E.cfg.inicio ? ' min="' + E.cfg.inicio + '"' : '') + ' required></div>' +
+    h += '<div class="linha dois topo-form"><div class="campo"><label for="f-data">Data</label><input type="date" id="f-data" value="' + f.data + '" max="' + t + '"' + (E.cfg.inicio && !ehAdmin ? ' min="' + E.cfg.inicio + '"' : '') + ' required></div>' +
       '<div class="campo"><span class="lbl" id="lbl-veio">A lavanderia veio?</span><div class="alternar" role="group" aria-labelledby="lbl-veio"><button type="button" data-veio="1" aria-pressed="' + (!f.falta) + '">Veio</button><button type="button" data-veio="0" aria-pressed="' + f.falta + '">Não veio</button></div></div></div>';
     h += '<div id="f-dia" class="dica" style="margin-top:-8px"></div>';
 
     h += '<div id="bloco-veio" class="campos"' + (f.falta ? ' hidden' : '') + '>';
-    h += '<fieldset class="grupo" style="margin:0"><div class="grupo-cab"><h2>Levaram</h2><span>sujo, pesado aqui</span></div><div class="linha">' +
+    var motivos = function (lado, lista, atual) { return '<div class="motivos" id="mot-' + lado + '"' + ((lado === 'l' ? f.levouSim : f.trouxeSim) ? ' hidden' : '') + '><span class="lbl">Por quê?</span><div class="chips" role="group">' + lista.map(function (o) { return '<button type="button" class="chip" data-mot="' + lado + '" data-cod="' + o[0] + '" aria-pressed="' + (atual === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div></div>'; };
+    h += '<fieldset class="grupo" style="margin:0"><div class="grupo-cab"><h2>A lavanderia levou roupa suja?</h2>' + '<div class="alternar mini" role="group" aria-label="Levaram"><button type="button" data-lado="l" data-sim="1" aria-pressed="' + f.levouSim + '">Sim</button><button type="button" data-lado="l" data-sim="0" aria-pressed="' + !f.levouSim + '">Não</button></div>' + '</div><div class="linha" id="corpo-l"' + (f.levouSim ? '' : ' hidden') + '>' +
       '<div class="campo largo"><label for="f-lcam">Camisolas<span class="sr"> levadas, em kg</span></label><div class="kg"><input type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" id="f-lcam" placeholder="0,0" value="' + esc(f.lcam) + '"></div></div>' +
-      passo('lbr', 'Mops brancos', 'levados', f.lbr) + passo('lvm', 'Mops vermelhos', 'levados', f.lvm) + '</div></fieldset>';
-    h += '<fieldset class="grupo" style="margin:0"><div class="grupo-cab"><h2>Trouxeram</h2><span>limpo, contado e pesado pela lavanderia</span></div>' +
+      passo('lbr', 'Mops brancos', 'levados', f.lbr) + passo('lvm', 'Mops vermelhos', 'levados', f.lvm) + '</div>' + motivos('l', SEM_LEVAR, f.motivoL) + '</fieldset>';
+    h += '<fieldset class="grupo" style="margin:0"><div class="grupo-cab"><h2>A lavanderia trouxe roupa limpa?</h2>' + '<div class="alternar mini" role="group" aria-label="Trouxeram"><button type="button" data-lado="t" data-sim="1" aria-pressed="' + f.trouxeSim + '">Sim</button><button type="button" data-lado="t" data-sim="0" aria-pressed="' + !f.trouxeSim + '">Não</button></div>' + '</div><div id="corpo-t"' + (f.trouxeSim ? '' : ' hidden') + ' class="campos" style="gap:14px">' +
       '<div class="linha dois"><div class="campo"><label for="f-tcam">Camisolas<span class="sr"> devolvidas, em kg</span></label><div class="kg"><input type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next" id="f-tcam" placeholder="0,0" value="' + esc(f.tcam) + '"></div></div>' +
       '<div class="campo"><label for="f-tpecas">Peças<span class="sr"> devolvidas</span></label><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" enterkeyhint="next" id="f-tpecas" placeholder="0" value="' + esc(f.tpecas) + '" style="font-size:17px"></div></div>' +
-      '<div class="linha dois">' + passo('tbr', 'Mops brancos', 'devolvidos', f.tbr) + passo('tvm', 'Mops vermelhos', 'devolvidos', f.tvm, 'done') + '</div>' +
+      '<div class="linha dois">' + passo('tbr', 'Mops brancos', 'devolvidos', f.tbr) + passo('tvm', 'Mops vermelhos', 'devolvidos', f.tvm, 'done') + '</div></div>' + motivos('t', SEM_TRAZER, f.motivoT) +
       '<div id="f-conf" class="conf"></div></fieldset>';
     h += '<label class="marcar"><input type="checkbox" id="f-urg"' + (f.urgencia ? ' checked' : '') + '><span>Visita de urgência <span class="muted">(pedida por alta demanda)</span></span></label>';
     h += '</div>';
@@ -1607,14 +1814,13 @@ window.LAV_CONFIG = {
     h += '<div class="campo"><label for="f-obs">Observação <span class="muted" style="font-weight:400">(opcional)</span></label><textarea id="f-obs" maxlength="500">' + esc(f.obs) + '</textarea></div>';
     h += '</div>';
 
-    h += '<aside class="lateral"><div class="painel resumo-form"><div class="painel-cab"><h2>Com a lavanderia</h2><span>antes → depois</span></div><div class="painel-corpo" id="f-lado"></div></div>' +
-      '<p class="msg" id="f-msg" role="alert"></p>';
+    h += '<aside class="lateral"><div class="painel resumo-form"><div class="painel-cab"><h2>Com a lavanderia</h2><span>antes → depois</span></div><div class="painel-corpo" id="f-lado"></div></div>';
     if (f.id) {
       var o = f.original;
-      h += '<button type="button" class="btn perigo" id="f-excluir" style="align-self:flex-start">Excluir este registro</button>' +
+      h += (podeApagar(o) ? '<button type="button" class="btn perigo" id="f-excluir" style="align-self:flex-start">Excluir este registro</button>' : '<p class="peq muted">Só o responsável pode excluir este registro.</p>') +
         '<p class="peq muted">Registrado' + (o.por ? ' por ' + esc(nome(o.por)) : '') + (o.em && L.dataLocal(o.em) ? ' em ' + dma(L.dataLocal(o.em)) : '') + (o.editPor ? '. Última alteração por ' + esc(nome(o.editPor)) + '.' : '.') + '</p>';
     }
-    h += '<div class="salvar-fixo botoes"><button type="submit" class="btn pri grande" id="f-salvar">' + (f.id ? 'Salvar alterações' : 'Salvar visita') + '</button>' +
+    h += '<div class="salvar-fixo botoes"><p class="msg" id="f-msg" role="alert"></p><button type="submit" class="btn pri grande" id="f-salvar">' + (f.id ? 'Salvar alterações' : 'Salvar visita') + '</button>' +
       (f.id ? '<button type="button" class="btn grande" id="f-cancelar">Cancelar</button>' : '') + '</div>';
     h += '</aside></form>';
     return h;
@@ -1637,8 +1843,9 @@ window.LAV_CONFIG = {
     var lc = L.lerNumero(form.lcam), tc = L.lerNumero(form.tcam), tp = L.lerNumero(form.tpecas);
     return L.visita(form.id || form.novoId, {
       data: form.data, status: form.falta ? 'falta' : 'realizada', motivo: form.motivo, urgencia: form.urgencia,
-      levou: { cam: isFinite(lc) ? lc : 0, br: form.lbr || 0, vm: form.lvm || 0 },
-      trouxe: { cam: isFinite(tc) ? tc : 0, pecas: isFinite(tp) ? tp : 0, br: form.tbr || 0, vm: form.tvm || 0 },
+      levou: form.levouSim ? { cam: isFinite(lc) ? lc : 0, br: form.lbr || 0, vm: form.lvm || 0 } : {},
+      trouxe: form.trouxeSim ? { cam: isFinite(tc) ? tc : 0, pecas: isFinite(tp) ? tp : 0, br: form.tbr || 0, vm: form.tvm || 0 } : {},
+      semLevar: form.levouSim ? '' : (form.motivoL || 'outro'), semTrazer: form.trouxeSim ? '' : (form.motivoT || 'outro'),
       em: form.original ? form.original.em : agoraISO()
     });
   }
@@ -1655,7 +1862,8 @@ window.LAV_CONFIG = {
     else if (fer) txt += 'feriado (' + fer.nome + ').';
     else if (L.ehPrevisto(E, d)) txt += 'dia da agenda.';
     else txt += 'fora da agenda.';
-    dia.innerHTML = esc(txt) + (outras.length ? ' <strong style="color:var(--warn)">Já existe ' + (outras.length === 1 ? 'um registro' : outras.length + ' registros') + ' neste dia (' + esc(outras.map(function (o) { return o.falta ? 'falta' : 'visita de ' + nome(o.por); }).join(', ')) + ').</strong>' : '');
+    if (form.falta && !L.ehPrevisto(E, d)) txt += ' Não era dia combinado: se a lavanderia não veio, não precisa registrar.';
+    dia.innerHTML = esc(txt) + (outras.length ? ' <strong style="color:var(--warn)">Já existe ' + (outras.length === 1 ? 'um registro' : outras.length + ' registros') + ' neste dia (' + esc(outras.map(function (o) { return o.falta ? 'falta' : o.por === meuId ? 'sua visita' : 'visita de ' + nome(o.por); }).join(', ')) + ').</strong>' : '');
 
     var semEsta = comVisita(E.visitas.filter(function (v) { return v.id !== form.id; }));
     var vNova = visitaDoForm();
@@ -1671,7 +1879,7 @@ window.LAV_CONFIG = {
       if (info) {
         info.abate.forEach(function (x) {
           var l = x.leva;
-          var nomeL = l.inicial ? 'O que já estava com a lavanderia' : 'Coleta de ' + dsem(l.data) + ' ' + dm(l.data);
+          var nomeL = l.inicial ? 'O que já estava com a lavanderia' : 'Roupa levada em ' + dsem(l.data) + ' ' + dm(l.data);
           ch += '<div><b>' + nomeL + '</b>: ' + fkg(l.sujo) + ' kg sujos, esperado ' + fkg(l.esperado.lo) + '–' + fkg(l.esperado.hi) + ' kg limpos. ' +
             (l.fechadaEm ? '<span class="tag" data-n="ok">Completa</span>' : '<span class="tag">Faltam ~' + fkg(l.falta) + ' kg</span>') + '</div>';
         });
@@ -1719,6 +1927,17 @@ window.LAV_CONFIG = {
       if (b.dataset.passo) {
         var inp = g(b.dataset.passo);
         inp.value = Math.max(0, inteiroOu0(inp.value) + (+b.dataset.d)); inp.removeAttribute('aria-invalid'); lerForm(); atualizarLateral();
+      } else if (b.dataset.lado) {
+        var lado = b.dataset.lado, sim = b.dataset.sim === '1';
+        form[lado === 'l' ? 'levouSim' : 'trouxeSim'] = sim;
+        b.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        document.getElementById('corpo-' + lado).hidden = !sim;
+        document.getElementById('mot-' + lado).hidden = sim;
+        msgForm(''); atualizarLateral();
+      } else if (b.dataset.mot) {
+        var k = b.dataset.mot === 'l' ? 'motivoL' : 'motivoT';
+        form[k] = form[k] === b.dataset.cod ? '' : b.dataset.cod;
+        b.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.cod === form[k])); });
       } else if (b.dataset.veio) {
         form.falta = b.dataset.veio === '0';
         el.querySelectorAll('[data-veio]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
@@ -1732,7 +1951,7 @@ window.LAV_CONFIG = {
     var canc = g('cancelar'); if (canc) canc.onclick = function () { form = null; ir('historico'); };
     var exc = g('excluir'); if (exc) exc.onclick = excluirVisita;
     lerForm(); atualizarLateral();
-    if (!form.id && !form.falta && !form.lcam) g('lcam').focus({ preventScroll: true });
+    if (!form.id && !form.falta && !form.lcam && !(window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) g('lcam').focus({ preventScroll: true });
   }
   function msgForm(txt, n) { var m = g('msg'); if (m) { m.textContent = txt; m.dataset.n = n || 'bad'; } }
 
@@ -1740,9 +1959,11 @@ window.LAV_CONFIG = {
     if (salvando || !db) return;
     lerForm();
     var t = hoje(), f = form;
+    if (!f.id && f.dia && f.data === f.dia && f.dia !== t) { f.data = f.dia = t; desenhar(); return msgForm('Virou o dia: a data mudou para hoje (' + dma(t) + '). Confira e salve.', 'warn'); }
     if (!L.dataValida(f.data)) return msgForm('Escolha uma data válida.');
     if (f.data > t) return msgForm('A data não pode ser no futuro.');
-    if (E.cfg.inicio && f.data < E.cfg.inicio) return msgForm('Essa data é antes do início do controle (' + dma(E.cfg.inicio) + '). O que já estava com a lavanderia entra no saldo inicial, em Ajustes.');
+    var moverInicio = E.cfg.inicio && f.data < E.cfg.inicio;
+    if (moverInicio && !ehAdmin) return msgForm('Essa data é antes do início do controle (' + dma(E.cfg.inicio) + '). Peça ao responsável para lançar ou mudar o início em Ajustes.');
     var corpo = { data: f.data, status: f.falta ? 'falta' : 'realizada', urgencia: false, motivo: '', obs: f.obs.trim().slice(0, 500),
       levou: { cam: 0, br: 0, vm: 0 }, trouxe: { cam: 0, pecas: 0, br: 0, vm: 0 } };
     var checar = [];
@@ -1757,12 +1978,19 @@ window.LAV_CONFIG = {
       var mAntes = L.mops(comVisita(E.visitas.filter(function (v) { return v.id !== f.id; })), f.data);
       if (f.lbr > Math.max(0, mAntes.br.aqui) + f.tbr) checar.push('Levaram ' + f.lbr + ' mops brancos, mas pelos registros só havia ' + Math.max(0, mAntes.br.aqui) + ' aqui.');
       if (f.lvm > Math.max(0, mAntes.vm.aqui) + f.tvm) checar.push('Levaram ' + f.lvm + ' mops vermelhos, mas pelos registros só havia ' + Math.max(0, mAntes.vm.aqui) + ' aqui.');
-      if (!lc && !tc && !tp && !f.lbr && !f.lvm && !f.tbr && !f.tvm) return msgForm('Preencha o que levaram ou o que trouxeram. Se não houve visita, marque "Não veio".');
+      if (!f.levouSim) { lc = 0; f.lbr = 0; f.lvm = 0; }
+      if (!f.trouxeSim) { tc = 0; tp = 0; f.tbr = 0; f.tvm = 0; }
+      if (f.levouSim && !lc && !f.lbr && !f.lvm) { g('lcam').focus(); return msgForm('Preencha o que a lavanderia levou, ou marque "Não" em "A lavanderia levou roupa suja?".'); }
+      if (f.trouxeSim && !tc && !tp && !f.tbr && !f.tvm) { g('tcam').focus(); return msgForm('Preencha o que a lavanderia trouxe, ou marque "Não" em "A lavanderia trouxe roupa limpa?".'); }
+      if (!f.levouSim && !f.trouxeSim && !f.motivoL && !f.motivoT) return msgForm('Se não levaram nem trouxeram nada, escolha o motivo em pelo menos um dos dois.');
       if (tp > 0 && !tc) { g('tcam').focus(); return msgForm('Informe também o peso das camisolas devolvidas.'); }
       [['levado', lc], ['devolvido', tc]].forEach(function (x) { if (x[1] > 200) checar.push('O peso ' + x[0] + ' é ' + fkg(x[1]) + ' kg, acima do comum.'); else if (x[1] > 0 && x[1] < 2) checar.push('O peso ' + x[0] + ' é ' + fkg(x[1]) + ' kg, abaixo do comum.'); });
       corpo.urgencia = f.urgencia;
       corpo.levou = { cam: L.r2(lc), br: f.lbr, vm: f.lvm };
       corpo.trouxe = { cam: L.r2(tc), pecas: tp, br: f.tbr, vm: f.tvm };
+      var comum = function (m) { return m === 'erro' || m === 'feriado' ? m : ''; };
+      corpo.semLevar = f.levouSim ? '' : (f.motivoL || comum(f.motivoT) || 'outro');
+      corpo.semTrazer = f.trouxeSim ? '' : (f.motivoT || comum(f.motivoL) || 'outro');
     }
     var mesmas = E.visitas.filter(function (v) { return v.data === f.data && v.id !== f.id; });
     var faltasDia = mesmas.filter(function (v) { return v.falta; }), visitasDia = mesmas.filter(function (v) { return !v.falta; });
@@ -1771,6 +1999,7 @@ window.LAV_CONFIG = {
     var antesDaContagem = false;
     var etapas = Promise.resolve(true);
     var pergunta = function (t1, t2, b) { etapas = etapas.then(function (ok) { return ok && confirmar(t1, t2, b); }); };
+    if (moverInicio) pergunta('Lançar antes do início do controle?', 'O controle começa em ' + dma(E.cfg.inicio) + '. Ao salvar, o início passa para ' + dma(f.data) + ' e o saldo inicial é zerado. Em seguida informe, em Ajustes, o que já estava com a lavanderia nessa data.', 'Salvar e mudar o início');
     if (checar.length) pergunta('Confira antes de salvar', checar.join(' ') + ' Está certo?', 'Está certo');
     if (!f.id && !f.falta && visitasDia.length) { var o = visitasDia[0]; pergunta('Já registraram este dia', cap(nome(o.por)) + ' já registrou uma visita em ' + dm(f.data) + ' (' + fkg(o.levou.cam) + ' kg levados, ' + fkg(o.trouxe.cam) + ' kg devolvidos). É outra visita no mesmo dia?', 'É outra visita'); }
     if (!f.id && f.falta && visitasDia.length) pergunta('Já há visita neste dia', 'Existe uma visita registrada em ' + dm(f.data) + '. Registrar a falta mesmo assim?', 'Registrar falta');
@@ -1787,19 +2016,20 @@ window.LAV_CONFIG = {
       var btn = g('salvar'); btn.disabled = true; btn.textContent = 'Salvando…';
       var id = f.id || f.novoId;
       var ref = db.collection('visitas').doc(id);
-      var gravacao;
+      var gravacao, antesDe = Promise.resolve();
+      if (moverInicio) antesDe = gravar(function () { return db.doc('config/geral').set(Object.assign({}, cru.cfg || {}, { inicio: f.data, saldoIni: { cam: 0, br: 0, vm: 0 }, editPor: meuId, editEm: agoraISO() })); });
       if (f.id) {
         // edição: confere se ninguém mudou ou apagou antes, e preserva campos desconhecidos
-        gravacao = Promise.race([ref.get(), new Promise(function (_, rej) { setTimeout(function () { rej({ code: 'timeout' }); }, 12000); })]).then(function (s) {
+        gravacao = antesDe.then(function () { return Promise.race([ref.get(), new Promise(function (_, rej) { setTimeout(function () { rej({ code: 'timeout' }); }, 12000); })]).then(function (s) {
           if (!s.exists) throw { code: 'sumiu' };
           var atual = s.data();
           if ((atual.editEm || '') !== (f.original.editEm || '')) throw { code: 'mudou' };
           var final = Object.assign({}, atual, corpo, { por: atual.por || null, em: atual.em || '', editPor: meuId, editEm: agoraISO() });
           return gravar(function () { return ref.set(final); });
-        });
+        }); });
       } else {
         corpo.por = meuId; corpo.em = antesDaContagem ? new Date(new Date(contDia.em).getTime() - 1000).toISOString() : agoraISO();
-        gravacao = gravar(function () { return ref.set(corpo); });
+        gravacao = antesDe.then(function () { return gravar(function () { return ref.set(corpo); }); });
       }
       var copiasFaltas = faltasDia.map(function (x) { return { id: x.id, data: (cru.visitas.filter(function (c) { return c.id === x.id; })[0] || {}).data }; });
       gravacao.then(function () {
@@ -1807,7 +2037,8 @@ window.LAV_CONFIG = {
         salvando = false; formNaTela = false;
         var editou = !!f.id;
         form = null;
-        if (editou) { toast('Alterações salvas'); ir('historico'); }
+        if (moverInicio) { toast('Salvo. Informe o que já estava com a lavanderia em ' + dma(f.data) + '.'); ir('ajustes'); }
+        else if (editou) { toast('Alterações salvas'); ir('historico'); }
         else {
           toast(corpo.status === 'falta' ? 'Falta registrada' : 'Visita registrada', { rotulo: 'Desfazer', fn: function () {
             gravar(function () { return db.collection('visitas').doc(id).delete(); })
@@ -1850,18 +2081,17 @@ window.LAV_CONFIG = {
     vs = vs.slice().reverse();
     var pend = E.cfg.inicio ? L.agenda(E, E.cfg.inicio > a ? E.cfg.inicio : a, b < t ? b : t, t).filter(function (x) { return x.st === 'pendente'; }) : [];
     var h = '<div class="cab"><h1>Histórico</h1></div>';
-    h += '<div class="filtros"><div class="campo"><label for="h-mes">Mês</label><input type="month" id="h-mes" value="' + filtroHist.mes + '" max="' + t.slice(0, 7) + '"></div>' +
-      '<div class="chips" role="group" aria-label="Filtrar">' + [['todos', 'Tudo'], ['faltas', 'Faltas'], ['extras', 'Fora da agenda'], ['conferir', 'Para conferir']].map(function (o) {
+    h += '<div class="filtros"><div class="cal-titulo mes-nav"><button type="button" class="cal-nav" data-hmes="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2><b>' + MES_CURTO[+filtroHist.mes.slice(5) - 1] + '</b> ' + filtroHist.mes.slice(0, 4) + '</h2><button type="button" class="cal-nav" data-hmes="1" aria-label="Próximo mês"' + (filtroHist.mes >= t.slice(0, 7) ? ' disabled' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div>' +
+      '<div class="chips" role="group" aria-label="Filtrar">' + [['todos', 'Tudo'], ['faltas', 'Não veio'], ['extras', 'Fora da agenda'], ['conferir', 'Para conferir']].map(function (o) {
         return '<button class="chip" data-tipo="' + o[0] + '" aria-pressed="' + (tp === o[0]) + '">' + o[1] + '</button>';
       }).join('') + '</div></div>';
     if (pend.length && tp === 'todos') h += '<div class="aviso" data-n="warn"><div class="txt"><strong>Dias da agenda sem registro</strong><span>' + pend.map(function (x) { return dsem(x.data) + ' ' + dm(x.data); }).join(', ') + '</span></div>' + (podeEscrever ? '<div class="acoes">' + pend.slice(-3).reverse().map(function (x) { return '<button class="btn" data-reg="' + x.data + '">' + dsem(x.data) + ' ' + dm(x.data) + '</button>'; }).join('') + '</div>' : '') + '</div>';
-    h += '<div class="painel">' + (vs.length ? '<ul class="lista">' + vs.map(function (v) { return itemVisita(v, con, vg, podeEscrever); }).join('') + '</ul>' : '<p class="vazio">Nenhum registro em ' + mesAno(a) + (tp !== 'todos' ? ' com esse filtro' : '') + '.</p>') + '</div>';
+    h += '<div class="painel">' + (vs.length ? '<ul class="lista">' + vs.map(function (v) { return itemVisita(v, con, vg, podeEscrever && (ehAdmin || !E.cfg.inicio || v.data >= E.cfg.inicio)); }).join('') + '</ul>' : '<p class="vazio">Nenhum registro em ' + mesAno(a) + (tp !== 'todos' ? ' com esse filtro' : '') + '.</p>') + '</div>';
     if (podeEscrever && vs.length) h += '<p class="peq muted">Toque num registro para corrigir ou excluir.</p>';
     return h;
   }
   function ligarHistorico() {
-    var m = document.getElementById('h-mes');
-    m.onchange = function () { if (/^\d{4}-\d{2}$/.test(m.value)) { filtroHist.mes = m.value; m.blur(); desenhar(); } };
+    document.querySelectorAll('[data-hmes]').forEach(function (b) { b.onclick = function () { var d0 = L.parse(filtroHist.mes + '-01'); d0.setMonth(d0.getMonth() + (+b.dataset.hmes)); var m2 = L.iso(d0).slice(0, 7); if (m2 <= hoje().slice(0, 7)) { filtroHist.mes = m2; desenhar(true); } }; });
     document.querySelectorAll('[data-tipo]').forEach(function (b) { b.onclick = function () { filtroHist.tipo = b.dataset.tipo; desenhar(true); }; });
   }
 
@@ -1876,21 +2106,26 @@ window.LAV_CONFIG = {
     var hojeOuFim = r.ate === t ? 'Hoje' : 'No fim do período';
     // visitas
     var stV = r.pontualidade == null ? ['', 'Sem dados'] : r.pontualidade >= 0.9 ? ['ok', 'Em dia'] : r.pontualidade >= 0.7 ? ['warn', 'Algumas faltas'] : ['bad', 'Muitas faltas'];
-    var tv = r.esperadas ? 'A lavanderia veio em ' + r.feitas + ' dos ' + r.esperadas + ' dias combinados' + (r.faltaLav.length ? ' e faltou em ' + plural(r.faltaLav.length, 'dia', 'dias') : '') + '.' : 'Não havia dias combinados no período.';
+    if (stV[0] === 'ok' && r.visitas.some(function (v) { return !v.falta && ((v.semTrazer && v.semTrazer !== 'feriado') || v.semLevar === 'erro'); })) stV = ['warn', 'Visitas incompletas'];
+    var tv = r.esperadas ? 'A lavanderia veio em ' + r.feitas + ' dos ' + r.esperadas + ' dias combinados' + (r.faltaLav.length ? ' e faltou em ' + plural(r.faltaLav.length, 'dia', 'dias') : '') + '.' : r.pendentes.length ? 'Ainda não dá para saber se a lavanderia veio nos dias combinados.' : 'Não havia dias combinados no período.';
     if (r.extras + r.urgencias) tv += ' Veio também ' + plural(r.extras + r.urgencias, 'vez', 'vezes') + ' fora da agenda' + (r.urgencias ? ' (' + plural(r.urgencias, 'urgência', 'urgências') + ')' : '') + '.';
     if (r.feriados) tv += ' ' + plural(r.feriados, 'dia caiu', 'dias caíram') + ' em feriado.';
+    var semTr = r.visitas.filter(function (v) { return !v.falta && v.semTrazer && v.semTrazer !== 'feriado'; }), semLv = r.visitas.filter(function (v) { return !v.falta && v.semLevar === 'erro'; });
+    if (semTr.length) tv += ' Em ' + plural(semTr.length, 'visita', 'visitas') + ' a lavanderia veio mas não trouxe roupa limpa (' + semTr.map(function (v) { return dm(v.data) + ': ' + rotuloMotivo(SEM_TRAZER, v.semTrazer); }).join('; ') + ').';
+    if (semLv.length) tv += ' Em ' + plural(semLv.length, 'visita', 'visitas') + ' não levaram a roupa suja por erro deles.';
     if (r.outro.length) tv += ' Em ' + plural(r.outro.length, 'dia', 'dias') + ' não houve visita por outro motivo.';
     if (r.pendentes.length) tv += ' ' + plural(r.pendentes.length, 'dia ficou', 'dias ficaram') + ' sem registro da equipe.';
     // camisolas
     var pd = pendencia(con);
     var stC = null;
-    var tc = r.realizadas ? 'Foram ' + fkg(r.tot.lCam) + ' kg de camisolas sujas e voltaram ' + fkg(r.tot.tCam) + ' kg limpas' + (r.tot.tPecas ? ' (' + r.tot.tPecas + ' peças)' : '') + '.' : 'Não houve movimento de camisolas.';
+    var tc = r.realizadas ? 'No período a lavanderia levou ' + fkg(r.tot.lCam) + ' kg de camisolas sujas e devolveu ' + fkg(r.tot.tCam) + ' kg limpas' + (r.tot.tPecas ? ' (' + r.tot.tPecas + ' peças)' : '') + '. A roupa devolvida pode ser de coletas anteriores ao período.' : 'Não houve movimento de camisolas.';
     var sujAlta = r.sujeiraMedia != null && r.sujeiraMedia > cfg.sujMax + 2, sujBaixa = r.sujeiraMedia != null && r.sujeiraMedia < cfg.sujMin - 2;
     if (r.sujeiraMedia != null) tc += ' A roupa limpa pesa menos porque a suja carrega sujeira e umidade, normalmente ' + cfg.sujMin + '% a ' + cfg.sujMax + '% do peso. No período, voltou ' + pct(r.sujeiraMedia) + '% mais leve' + (sujAlta ? ', acima do normal: pode estar faltando roupa.' : sujBaixa ? ', abaixo do normal: pode haver coleta sem registro.' : ', dentro do normal.');
-    tc += ' ' + hojeOuFim + ' a lavanderia ainda tem cerca de ' + fkg(con.aDevolver.med) + ' kg para devolver' + (con.abertas.length && !pd ? ', da última coleta' : '') + '.';
-    if (pd) tc += ' Atenção: cerca de ' + fkg(pd.kg) + ' kg deveriam ter voltado e ainda não voltaram.';
+    var temIni = con.abertas.some(function (l) { return l.inicial; });
+    tc += ' ' + hojeOuFim + ' ainda falta voltar cerca de ' + fkg(con.aDevolver.med) + ' kg de roupa limpa' + (temIni ? ', contando o que já estava com a lavanderia em ' + dma(cfg.inicio) : con.abertas.length && !pd ? ', da última coleta' : '') + '.';
+    if (pd) { var atras = con.abertas.filter(function (l) { return l.atrasada || (pd.desde && l.data <= pd.desde.data); }); tc += ' Desse total, cerca de ' + fkg(pd.kg) + ' kg estão atrasados' + (atras.length ? ' (' + atras.map(function (l) { return l.inicial ? 'saldo inicial' : 'coleta de ' + dm(l.data); }).join(', ') + ')' : '') + '.'; }
     stC = pd || r.sobras.length || sujAlta || sujBaixa ? ['warn', 'Conferir'] : ['ok', 'Normal'];
-    if (r.sobras.length) tc += ' Em ' + plural(r.sobras.length, 'visita', 'visitas') + ' voltou mais do que tinha sido levado, o que indica coleta não registrada.';
+    if (r.sobras.length) tc += ' Em ' + plural(r.sobras.length, 'visita', 'visitas') + ' (' + r.sobras.map(function (x) { return dm(x.v.data); }).join(', ') + ') voltou mais roupa do que a lavanderia tinha conosco, sinal de coleta não registrada.';
     // mops
     var mm = r.mops;
     var stM = mm.inconsistente ? ['warn', 'Conferir'] : ['', 'Informativo'];
@@ -1912,14 +2147,14 @@ window.LAV_CONFIG = {
         r.pendentes.map(function (x) { return '<li>' + cap(dlongo(x.data)) + ': sem registro da equipe</li>'; }).join('') + '</ul></div>';
     }
     var vs = r.visitas;
-    h += '<div><h2 style="margin-bottom:6px">Visitas</h2>' + (vs.length ? '<div class="tabela-wrap"><table class="visitas"><thead><tr><th>Data</th><th>Visita</th><th class="n">Camisolas levadas</th><th class="n">Camisolas devolvidas</th><th class="n">Peças</th><th>Mops levados</th><th>Mops devolvidos</th></tr></thead><tbody>' +
+    h += '<div><h2 style="margin-bottom:6px">Visitas</h2>' + (vs.length ? '<div class="tabela-wrap"><table class="visitas"><thead><tr><th>Data</th><th>Visita</th><th class="n">Camisolas levadas</th><th class="n">Camisolas devolvidas</th><th>Mops levados</th><th>Mops devolvidos</th><th class="n">Peças devolvidas</th></tr></thead><tbody>' +
       vs.map(function (v) {
         var tp = { falta: v.motivo === 'feriado' ? 'Feriado' : v.motivo === 'outro' ? 'Sem visita' : 'Não veio', urgencia: 'Urgência', extra: 'Fora da agenda', prevista: 'Na agenda' }[L.tipoVisita(E, v, vg)];
         var dt = '<td class="dt">' + dsem(v.data) + ' ' + dm(v.data) + '</td><td class="tp">' + tp + '</td>';
-        if (v.falta) return '<tr class="sem">' + dt + '<td class="n" data-l="Camisolas levadas">—</td><td class="n" data-l="Camisolas devolvidas">—</td><td class="n" data-l="Peças">—</td><td data-l="Mops levados">—</td><td data-l="Mops devolvidos">—</td></tr>';
+        if (v.falta) return '<tr class="sem">' + dt + '<td class="n" data-l="Camisolas levadas">—</td><td class="n" data-l="Camisolas devolvidas">—</td><td data-l="Mops levados">—</td><td data-l="Mops devolvidos">—</td><td class="n" data-l="Peças devolvidas">—</td></tr>';
         return '<tr>' + dt +
-          '<td class="n" data-l="Camisolas levadas">' + (v.levou.cam ? fkg(v.levou.cam) + ' kg' : '—') + '</td><td class="n" data-l="Camisolas devolvidas">' + (v.trouxe.cam ? fkg(v.trouxe.cam) + ' kg' : '—') + '</td><td class="n" data-l="Peças">' + (v.trouxe.pecas || '—') + '</td>' +
-          '<td data-l="Mops levados">' + (mopsTxt(v.levou.br, v.levou.vm) || '—') + '</td><td data-l="Mops devolvidos">' + (mopsTxt(v.trouxe.br, v.trouxe.vm) || '—') + '</td></tr>';
+          '<td class="n" data-l="Camisolas levadas">' + (v.semLevar ? 'não levaram' : v.levou.cam ? fkg(v.levou.cam) + ' kg' : '—') + '</td><td class="n" data-l="Camisolas devolvidas">' + (v.semTrazer ? 'não trouxeram' : v.trouxe.cam ? fkg(v.trouxe.cam) + ' kg' : '—') + '</td>' +
+          '<td data-l="Mops levados">' + (mopsTxt(v.levou.br, v.levou.vm) || '—') + '</td><td data-l="Mops devolvidos">' + (mopsTxt(v.trouxe.br, v.trouxe.vm) || '—') + '</td><td class="n" data-l="Peças devolvidas">' + (v.trouxe.pecas || '—') + '</td></tr>';
       }).join('') + '</tbody></table></div>' : '<p class="muted">Nenhum registro no período.</p>') + '</div>';
     return h;
   }
@@ -1953,15 +2188,15 @@ window.LAV_CONFIG = {
       htmlRelatorio(R, true) + '</div><p class="rodape">Gerado em ' + dma(hoje()) + '. Para salvar em PDF, abra no computador e use Imprimir (Ctrl+P) › Salvar como PDF.</p></body></html>';
   }
   function csvRelatorio(R) {
-    var q = function (s) { s = String(s == null ? '' : s); return /[";\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    var q = function (s) { s = String(s == null ? '' : s); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     var n = function (x) { return x ? String(L.r2(x)).replace('.', ',') : '0'; };
     var vg = L.vagas(E), con = R.r.con;
-    var linhas = [['Data', 'Dia', 'Visita', 'Motivo da falta', 'Camisolas levadas (kg)', 'Mops brancos levados', 'Mops vermelhos levados', 'Camisolas devolvidas (kg)', 'Peças devolvidas', 'Mops brancos devolvidos', 'Mops vermelhos devolvidos', 'Voltou a mais (kg)', 'Observação', 'Registrado por']];
+    var linhas = [['Data', 'Dia', 'Visita', 'Motivo da falta', 'Camisolas levadas (kg)', 'Mops brancos levados', 'Mops vermelhos levados', 'Camisolas devolvidas (kg)', 'Peças devolvidas', 'Mops brancos devolvidos', 'Mops vermelhos devolvidos', 'Voltou a mais (kg)', 'Não levaram (motivo)', 'Não trouxeram (motivo)', 'Observação', 'Registrado por']];
     R.r.visitas.forEach(function (v) {
       var tp = { falta: 'Falta', urgencia: 'Urgência', extra: 'Fora da agenda', prevista: 'Na agenda' }[L.tipoVisita(E, v, vg)];
       var p = con.porVisita[v.id];
       linhas.push([dma(v.data), DIAS_LONGO[L.diaSemana(v.data)], tp, v.falta ? ({ lavanderia: 'Lavanderia não veio', feriado: 'Feriado', outro: 'Outro motivo' }[v.motivo]) : '',
-        n(v.levou.cam), v.levou.br, v.levou.vm, n(v.trouxe.cam), v.trouxe.pecas, v.trouxe.br, v.trouxe.vm, p && p.sobra ? n(p.sobra) : '', v.obs, v.por ? nome(v.por) : '']);
+        n(v.levou.cam), v.levou.br, v.levou.vm, n(v.trouxe.cam), v.trouxe.pecas, v.trouxe.br, v.trouxe.vm, p && p.sobra ? n(p.sobra) : '', v.semLevar ? rotuloMotivo(SEM_LEVAR, v.semLevar) : '', v.semTrazer ? rotuloMotivo(SEM_TRAZER, v.semTrazer) : '', v.obs, v.por ? nome(v.por) : '']);
     });
     return '﻿' + linhas.map(function (l) { return l.map(q).join(';'); }).join('\r\n');
   }
@@ -2012,7 +2247,7 @@ window.LAV_CONFIG = {
     var t = hoje(), c = E.cfg, m = L.mops(E, t), ro = podeEscrever ? '' : ' disabled';
     var h = '<div class="cab"><h1>Ajustes</h1></div><div class="config-grid">';
     h += '<form class="painel" id="cont-form" novalidate><div class="painel-cab"><h2>Contagem de mops</h2>' + (m.contagem ? '<span>última: ' + dm(m.contagem.data) + '</span>' : '') + '</div><div class="painel-corpo campos" style="gap:14px">' +
-      '<p class="peq muted">A lavanderia não informa quantos mops estão com ela. Conte os que estão aqui no hospital: a partir desta contagem, o sistema sabe quantos estão com a lavanderia.</p>' +
+      '<p class="peq muted">Conte os mops que estão aqui. O sistema calcula quantos estão com a lavanderia.</p>' +
       '<div class="linha dois">' + passo('cbr', 'Brancos aqui', 'contados', m.inconsistente ? '' : Math.min(m.br.total, Math.max(0, m.br.aqui)), 'next', !podeEscrever) + passo('cvm', 'Vermelhos aqui', 'contados', m.inconsistente ? '' : Math.min(m.vm.total, Math.max(0, m.vm.aqui)), 'done', !podeEscrever) + '</div>' +
       '<p class="peq" id="cont-prev">' + (m.inconsistente ? 'A conta atual não fecha. Conte agora e preencha.' : 'Pelos registros há ' + m.br.aqui + ' brancos e ' + m.vm.aqui + ' vermelhos aqui.') + (podeEscrever && L.agenda(E, t, t, t).some(function (x) { return x.st === 'hoje'; }) ? ' Hoje é dia de visita: se a lavanderia já passou, registre a visita antes de contar.' : '') + '</p>' +
       '<button class="btn pri" type="submit"' + ro + '>Salvar contagem</button><p class="msg" id="cont-msg"></p></div></form>';
@@ -2020,14 +2255,14 @@ window.LAV_CONFIG = {
       '<div class="linha dois"><div class="campo"><label for="aj-item">Mop</label><select id="aj-item"' + ro + '><option value="br">Branco</option><option value="vm">Vermelho</option></select></div>' +
       '<div class="campo"><label for="aj-mot">O que houve</label><select id="aj-mot"' + ro + '><option value="compra">Compra (entra)</option><option value="descarte">Descarte (sai)</option><option value="perda">Perda ou extravio (sai)</option></select></div></div>' +
       '<div class="linha dois">' + passo('ajq', 'Quantidade', '', 1, 'next', !podeEscrever) + '<div class="campo"><label for="aj-obs">Observação</label><input type="text" id="aj-obs" maxlength="200"' + ro + '></div></div>' +
-      '<button class="btn pri" type="submit"' + ro + '>Registrar</button><p class="msg" id="aj-msg"></p></div></form>';
+      '<button class="btn" type="submit"' + ro + '>Registrar</button><p class="msg" id="aj-msg"></p></div></form>';
     h += '</div>';
 
     var ajs = E.ajustes.slice().reverse();
     h += '<section class="secao"><h2>Movimentos de mops</h2><div class="painel">' + (ajs.length ? '<div class="tabela-wrap"><table><thead><tr><th>Data</th><th>O que houve</th><th>Detalhe</th><th>Por</th><th></th></tr></thead><tbody>' +
       ajs.map(function (a) {
         var det = a.motivo === 'contagem' ? 'Contados aqui: ' + mopsTxt(a.aquiBr, a.aquiVm).replace(/^$/, 'nenhum') : (a.qtd > 0 ? '+' : '') + a.qtd + ' ' + (a.item === 'br' ? (Math.abs(a.qtd) === 1 ? 'branco' : 'brancos') : (Math.abs(a.qtd) === 1 ? 'vermelho' : 'vermelhos'));
-        return '<tr><td style="white-space:nowrap">' + dma(a.data) + '</td><td>' + esc(MOTIVO[a.motivo]) + '</td><td>' + det + (a.obs ? ' <span class="muted">· ' + esc(a.obs) + '</span>' : '') + '</td><td class="muted">' + esc(nome(a.por)) + '</td><td style="text-align:right;white-space:nowrap">' + (podeEscrever ? '<button class="link perigo" data-del-aj="' + esc(a.id) + '">Excluir</button>' : '') + '</td></tr>';
+        return '<tr><td style="white-space:nowrap">' + dma(a.data) + '</td><td>' + esc(MOTIVO[a.motivo]) + '</td><td>' + det + (a.obs ? ' <span class="muted">· ' + esc(a.obs) + '</span>' : '') + '</td><td class="muted">' + esc(nome(a.por)) + '</td><td style="text-align:right;white-space:nowrap">' + (podeApagar(a) ? '<button class="link perigo" data-del-aj="' + esc(a.id) + '">Excluir</button>' : '') + '</td></tr>';
       }).join('') + '</tbody></table></div>' : '<p class="vazio">Nenhum movimento. Total base: ' + c.totalBr + ' brancos e ' + c.totalVm + ' vermelhos.</p>') + '</div></section>';
 
     h += '<section class="card"><div class="card-cab"><span class="rot">Aparência</span><span class="lat">vale só para este aparelho</span></div><div class="temas" role="group" aria-label="Tema">' +
@@ -2053,7 +2288,7 @@ window.LAV_CONFIG = {
     h += '<div class="painel"><div class="painel-cab"><h2>Feriados</h2><span>sem visita esperada</span></div><div class="painel-corpo campos" style="gap:14px">' +
       (podeEscrever ? '<form id="fer-form" class="linha dois" novalidate style="align-items:end"><div class="campo"><label for="fer-d">Data</label><input type="date" id="fer-d"></div><div class="campo"><label for="fer-n">Nome</label><input type="text" id="fer-n" maxlength="60" placeholder="Aniversário da cidade"></div><button class="btn" type="submit" style="grid-column:1/-1">Adicionar feriado</button></form><p class="msg" id="fer-msg"></p>' : '') +
       (fers.length ? '<div class="tabela-wrap"><table><tbody>' + fers.map(function (d) {
-        return '<tr><td style="white-space:nowrap">' + dsem(d) + ' ' + dma(d) + '</td><td>' + esc(E.feriados[d].nome) + '</td><td style="text-align:right">' + (podeEscrever ? '<button class="link perigo" data-del-fer="' + esc(E.feriados[d].id) + '">Excluir</button>' : '') + '</td></tr>';
+        return '<tr><td style="white-space:nowrap">' + dsem(d) + ' ' + dma(d) + '</td><td>' + esc(E.feriados[d].nome) + '</td><td style="text-align:right">' + (ehAdmin ? '<button class="link perigo" data-del-fer="' + esc(E.feriados[d].id) + '">Excluir</button>' : '') + '</td></tr>';
       }).join('') + '</tbody></table></div>' : '<p class="vazio">Nenhum feriado cadastrado.</p>') + '</div></div>';
     h += '</div>';
     return h;
@@ -2065,7 +2300,7 @@ window.LAV_CONFIG = {
     window.lavEquipe.listar().then(function (lst) {
       caixa.innerHTML = lst.map(function (p) {
         return '<div class="equipe-l" data-pid="' + esc(p.id) + '"><input type="text" value="' + esc(p.nome) + '" aria-label="Nome de ' + esc(p.email) + '" maxlength="60">' +
-          '<span class="em">' + esc(p.email) + '</span><select aria-label="Papel de ' + esc(p.email) + '">' + [['admin', 'Responsável'], ['equipe', 'Registra'], ['leitor', 'Só vê']].map(function (o) { return '<option value="' + o[0] + '"' + (p.papel === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
+          '<span class="em">' + esc(p.email) + '</span><select aria-label="Papel de ' + esc(p.email) + '">' + [['admin', 'Responsável'], ['equipe', 'Registra'], ['leitor', 'Só vê'], ['pendente', 'Sem acesso']].map(function (o) { return '<option value="' + o[0] + '"' + (p.papel === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>' +
           '<button type="button" class="btn">Salvar</button></div>';
       }).join('') || '<p class="muted peq">Ninguém ainda.</p>';
       caixa.querySelectorAll('.equipe-l').forEach(function (l) {
@@ -2227,6 +2462,9 @@ window.LAV_CONFIG = {
   }).catch(function () { semBanco = true; avisoRede = 'Não foi possível conectar ao banco de dados.'; marcarSinc('erro'); desenhar(); });
   desenhar();
 })();
+
+/* nomes no menu recolhido */
+document.querySelectorAll('.lateral-nav .aba, .lateral-nav .nav-btn').forEach(function (a) { if (!a.title) a.title = a.textContent.replace(/\s+/g, ' ').trim(); });
 
 </script>
 </body>
